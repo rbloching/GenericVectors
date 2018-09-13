@@ -6,8 +6,7 @@ using Xunit;
 namespace Tests
 {
     public class VectorOpTests
-    {
-        
+    {        
         [Fact]
         public void AddTest()
         {
@@ -110,5 +109,20 @@ namespace Tests
             BigInteger result = VectorOp.Mean(x);
             Assert.Equal(expected, result);            
         } 
+
+        [Fact]
+        public void VarPopulationTest()
+        {
+            double[] samples = {400,270,170,180,300 };            
+            double expected = 7144;
+            double result = VectorOp.Var(samples);
+            Assert.Equal(expected, result);
+        }
+               
+        [Fact]
+        public void VarSampleTest()
+        {
+            Assert.True(false);
+        }
     }
 }

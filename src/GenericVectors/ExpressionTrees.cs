@@ -8,9 +8,9 @@ namespace GenericVectors
         public static Action<T[], T[], T[]> GetElementWiseAction<T>(Func<Expression, Expression, BinaryExpression> binaryOp)
         {
             //parameters to function
-            var xArray = Expression.Parameter(typeof(T[]), "x");
-            var yArray = Expression.Parameter(typeof(T[]), "y");
-            var resultArray = Expression.Parameter(typeof(T[]), "result");
+            var xArray = Expression.Parameter(typeof(T[]));
+            var yArray = Expression.Parameter(typeof(T[]));
+            var resultArray = Expression.Parameter(typeof(T[]));
 
             //local variables
             var index = Expression.Variable(typeof(int));
@@ -73,24 +73,8 @@ namespace GenericVectors
 
             return Expression.Lambda<Action<T[], T, T[]>>(block, xArray, scalar, resultArray).Compile();
         }
-
-
-
-        static Expression getArrayLoopExpression(Expression operation, Expression vectorLength, Expression index)
-        {
-            var label = Expression.Label(typeof(void)); //void when not returning a value
-
-            var loop =
-            Expression.Loop(
-                Expression.Block(
-                    operation,
-                    Expression.PostIncrementAssign(index),
-                    Expression.IfThen(Expression.GreaterThanOrEqual(index, vectorLength), Expression.Break(label))
-                ),
-                label
-            );
-            return loop;
-        }
+       
+        
 
         public static Func<T[], T> CreateSum<T>()
         {
@@ -114,8 +98,8 @@ namespace GenericVectors
         public static Func<T[], T[], T> CreateDot<T>()
         {
             //parameters
-            var xArray = Expression.Parameter(typeof(T[]), "x");
-            var yArray = Expression.Parameter(typeof(T[]), "y");
+            var xArray = Expression.Parameter(typeof(T[]));
+            var yArray = Expression.Parameter(typeof(T[]));
 
             //local variables
             var sum = Expression.Variable(typeof(T));
@@ -136,6 +120,84 @@ namespace GenericVectors
             var block = Expression.Block(new[] { sum, index, argLen }, setLen, loop, sum);
             
             return Expression.Lambda<Func<T[], T[], T>>(block, xArray, yArray).Compile();
+        }
+       
+        public static Func<T[], T> CreateVar<T>()
+        {
+            //parameters
+            var xArray = Expression.Parameter(typeof(T[]));
+
+            //local variables 
+            var arrayLen = Expression.Variable(typeof(int));
+            var index = Expression.Variable(typeof(int));
+            var count = Expression.Variable(typeof(T));
+            var sum = Expression.Variable(typeof(T));
+            var mean = Expression.Variable(typeof(T));
+            var diff = Expression.Variable(typeof(T));
+
+            //loop labels
+            var label1 = Expression.Label(typeof(void));
+            var label2 = Expression.Label(typeof(void));
+
+
+
+            var block =
+            Expression.Block(
+                new[] { sum, arrayLen, index, mean, diff, count },
+                Expression.Assign(arrayLen, Expression.ArrayLength(xArray)),
+                Expression.Assign(count, Expression.Convert(arrayLen, typeof(T))),
+                Expression.Assign(index, zeroInt()),
+
+                //first pass - get the average
+                Expression.Loop(
+                    Expression.Block(
+                        Expression.AddAssign(mean, Expression.ArrayIndex(xArray, index)),
+                        Expression.PostIncrementAssign(index),
+                        Expression.IfThen(Expression.GreaterThanOrEqual(index, arrayLen), Expression.Break(label1))
+                    ),
+                label1),
+                Expression.DivideAssign(mean, count),
+
+                //second pass - get the variance
+                Expression.Assign(index, zeroInt()),
+                Expression.Loop(
+                    Expression.Block(
+                        Expression.Assign(diff,
+                            Expression.Subtract(Expression.ArrayIndex(xArray, index), mean)
+                        ),
+                        Expression.AddAssign(sum, Expression.Multiply(diff, diff)),
+                        Expression.PostIncrementAssign(index),
+                        Expression.IfThen(Expression.GreaterThanOrEqual(index, arrayLen), Expression.Break(label2))
+                    ),
+                    label2
+                ),
+
+                Expression.DivideAssign(sum, count),
+                sum 
+            );
+            
+            return Expression.Lambda<Func<T[], T>>(block, xArray).Compile();            
+        }
+
+        static Expression zeroInt()
+        {
+            return Expression.Constant(0, typeof(int));
+        }
+
+        static Expression getArrayLoopExpression(Expression operation, Expression vectorLength, Expression index)
+        {
+            var label = Expression.Label(typeof(void)); //void when not returning a value
+
+            var loop =
+            Expression.Loop(
+                Expression.Block(
+                    operation,
+                    Expression.PostIncrementAssign(index),
+                    Expression.IfThen(Expression.GreaterThanOrEqual(index, vectorLength), Expression.Break(label))
+                ),
+                label
+            );
+            return loop;
         }
     }
 }
