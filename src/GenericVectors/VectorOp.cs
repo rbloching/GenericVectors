@@ -162,7 +162,12 @@ namespace GenericVectors
             return Operator.DivideInt32(Sum(x), x.Length);            
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static T Var<T>(T[] x)
         {
             return VectorOp<T>.Var(x);            

@@ -110,19 +110,51 @@ namespace Tests
             Assert.Equal(expected, result);            
         } 
 
-        [Fact]
+        [Fact]       
         public void VarPopulationTest()
         {
-            double[] samples = {400,270,170,180,300 };            
-            double expected = 7144;
-            double result = VectorOp.Var(samples);
-            Assert.Equal(expected, result);
+            double[] xDouble = {400,270,170,180,300 };            
+            double expectedDouble = 7144;
+            double resultDouble = VectorOp.Var(xDouble);
+            Assert.Equal(expectedDouble, resultDouble);
+
+            decimal[] xDecimal = { 400, 270, 170, 180, 300 };
+            decimal expectedDecimal = 7144M;
+            decimal resultDecimal = VectorOp.Var(xDecimal);
+            Assert.Equal(expectedDecimal, resultDecimal);
         }
                
         [Fact]
         public void VarSampleTest()
         {
             Assert.True(false);
+        }
+        
+        [Fact]
+        public void TypeInitialization()
+        {
+            //This test fails if a type initialization
+            // exception is thrown. No Assert needed
+            warmUpVector<short>();
+            warmUpVector<ushort>();
+            warmUpVector<int>();
+            warmUpVector<uint>();
+            warmUpVector<long>();
+            warmUpVector<ulong>();
+            warmUpVector<float>();
+            warmUpVector<double>();
+            warmUpVector<decimal>();
+            warmUpVector<BigInteger>();
+            warmUpVector<Complex>();            
+        }
+
+        void warmUpVector<T>()
+        {
+            int len = 10;
+            T[] x = new T[len];
+            T[] y = new T[len];
+            T[] z = new T[len];
+            VectorOp<T>.Add(x, y, z);
         }
     }
 }
