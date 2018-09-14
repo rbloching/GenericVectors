@@ -110,24 +110,28 @@ namespace Tests
             Assert.Equal(expected, result);            
         } 
 
+        /// <summary>
+        /// Test variance as population (deg. of freedom offset = 0)
+        /// </summary>
         [Fact]       
         public void VarPopulationTest()
-        {
+        {            
             double[] xDouble = {400,270,170,180,300 };            
             double expectedDouble = 7144;
             double resultDouble = VectorOp.Var(xDouble);
             Assert.Equal(expectedDouble, resultDouble);
-
-            decimal[] xDecimal = { 400, 270, 170, 180, 300 };
-            decimal expectedDecimal = 7144M;
-            decimal resultDecimal = VectorOp.Var(xDecimal);
-            Assert.Equal(expectedDecimal, resultDecimal);
         }
                
+        /// <summary>
+        /// Test variance as samples. (Deg. of freedom offset = 1)
+        /// </summary>
         [Fact]
         public void VarSampleTest()
         {
-            Assert.True(false);
+            double[] xDouble = { 400, 270, 170, 180, 300 };
+            double expectedDouble = 8930;
+            double resultDouble = VectorOp.Var(xDouble,1);
+            Assert.Equal(expectedDouble, resultDouble);
         }
         
         [Fact]

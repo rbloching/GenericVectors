@@ -122,10 +122,11 @@ namespace GenericVectors
             return Expression.Lambda<Func<T[], T[], T>>(block, xArray, yArray).Compile();
         }
        
-        public static Func<T[], T> CreateVar<T>()
+        public static Func<T[],int,T> CreateVar<T>()
         {
             //parameters
             var xArray = Expression.Parameter(typeof(T[]));
+            var degOfFreedom = Expression.Parameter(typeof(int));
 
             //local variables 
             var arrayLen = Expression.Variable(typeof(int));
@@ -134,6 +135,7 @@ namespace GenericVectors
             var sum = Expression.Variable(typeof(T));
             var mean = Expression.Variable(typeof(T));
             var diff = Expression.Variable(typeof(T));
+            var df = Expression.Variable(typeof(T));
 
             //loop labels
             var label1 = Expression.Label(typeof(void));
@@ -143,9 +145,10 @@ namespace GenericVectors
 
             var block =
             Expression.Block(
-                new[] { sum, arrayLen, index, mean, diff, count },
+                new[] { sum, arrayLen, index, mean, diff, count, df },
                 Expression.Assign(arrayLen, Expression.ArrayLength(xArray)),
                 Expression.Assign(count, Expression.Convert(arrayLen, typeof(T))),
+                Expression.Assign(df, Expression.Convert(degOfFreedom, typeof(T))),
                 Expression.Assign(index, zeroInt()),
 
                 //first pass - get the average
@@ -172,11 +175,11 @@ namespace GenericVectors
                     label2
                 ),
 
-                Expression.DivideAssign(sum, count),
-                sum 
+                Expression.DivideAssign(sum, Expression.Subtract(count,df)),
+                sum
             );
             
-            return Expression.Lambda<Func<T[], T>>(block, xArray).Compile();            
+            return Expression.Lambda<Func<T[],int, T>>(block, xArray, degOfFreedom).Compile();            
         }
 
         static Expression zeroInt()

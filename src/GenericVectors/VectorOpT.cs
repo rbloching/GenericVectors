@@ -21,7 +21,7 @@ namespace GenericVectors
 
         static readonly Func<T[], T> sum;
         static readonly Func<T[], T[], T> dot;
-        static readonly Func<T[], T> variance;
+        static readonly Func<T[],int, T> variance;
         
         static VectorOp()
         {            
@@ -91,9 +91,9 @@ namespace GenericVectors
             divScalar(x, scalar, result);
         }       
        
-        public static T Var(T[] x)
+        public static T Var(T[] x, int degOfFreedom)
         {
-            return variance(x);
+            return variance(x, degOfFreedom);
         }
 
     }
