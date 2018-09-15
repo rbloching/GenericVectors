@@ -118,7 +118,7 @@ namespace Tests
         {            
             double[] xDouble = {400,270,170,180,300 };            
             double expectedDouble = 7144;
-            double resultDouble = VectorOp.Variance(xDouble);
+            double resultDouble = VectorOp.Var(xDouble);
             Assert.Equal(expectedDouble, resultDouble);
         }
                
@@ -130,7 +130,7 @@ namespace Tests
         {
             double[] xDouble = { 400, 270, 170, 180, 300 };
             double expectedDouble = 8930;
-            double resultDouble = VectorOp.Variance(xDouble,1);
+            double resultDouble = VectorOp.Var(xDouble,1);
             Assert.Equal(expectedDouble, resultDouble);
         }
         
@@ -156,7 +156,7 @@ namespace Tests
         {
             double[] x = { 400, 270, 170, 180, 300 };
             double expected = 94.49868;
-            double result = VectorOp.StandardDeviation(x, 1);
+            double result = VectorOp.StdDev(x, 1);
             Assert.Equal(expected, result, 5);            
         }
 

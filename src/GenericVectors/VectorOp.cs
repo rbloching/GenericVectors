@@ -170,7 +170,7 @@ namespace GenericVectors
         /// <param name="df">degrees of freedom offset. This value will be subtracted
         /// from the number of elements in the array in the final average. Default is 0</param>
         /// <returns></returns>
-        public static T Variance<T>(T[] x, int df = 0)
+        public static T Var<T>(T[] x, int df = 0)
         {
             return VectorOp<T>.Variance(x, df);            
         }
@@ -180,11 +180,12 @@ namespace GenericVectors
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="x"></param>
-        /// <param name="df"></param>
+        /// <param name="df">degrees of freedom offset. This value will be subtracted 
+        /// from the number of elements in the array in the final average. Default is 0</param>
         /// <returns></returns>
-        public static T StandardDeviation<T>(T[] x, int df = 0)
+        public static T StdDev<T>(T[] x, int df = 0)
         {
-            return UnaryOp<T>.Sqrt(Variance(x, df));
+            return UnaryOp<T>.Sqrt(Var(x, df));
         }
        
     }
