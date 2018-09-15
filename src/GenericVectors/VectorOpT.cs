@@ -7,9 +7,9 @@ namespace GenericVectors
     /// Defines the expressions for each vector operation.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal static class VectorOp<T> 
+    internal static class VectorOp<T>
     {
-        static readonly Action<T[], T[], T[]> addArray;        
+        static readonly Action<T[], T[], T[]> addArray;
         static readonly Action<T[], T[], T[]> subtractArray;
         static readonly Action<T[], T[], T[]> multArray;
         static readonly Action<T[], T[], T[]> divArray;
@@ -21,7 +21,8 @@ namespace GenericVectors
 
         static readonly Func<T[], T> sum;
         static readonly Func<T[], T[], T> dot;
-
+        static readonly Func<T[],int, T> variance;
+        
         static VectorOp()
         {            
             addArray = ExpressionTrees.GetElementWiseAction<T>(Expression.Add);
@@ -36,6 +37,7 @@ namespace GenericVectors
             
             sum = ExpressionTrees.CreateSum<T>(); 
             dot = ExpressionTrees.CreateDot<T>();
+            variance = ExpressionTrees.CreateVar<T>();
         }
 
 
@@ -87,6 +89,12 @@ namespace GenericVectors
         public static void Divide(T[] x, T scalar,  T[] result)
         {
             divScalar(x, scalar, result);
+        }       
+       
+        public static T Variance(T[] x, int degOfFreedom)
+        {
+            return variance(x, degOfFreedom);
         }
+
     }
 }

@@ -144,7 +144,7 @@ namespace GenericVectors
         /// Calculates the sum of the elements in the array
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="x"></param>
+        /// <param name="x">The array of elements to sum</param>
         /// <returns>the sum of the elements in the array</returns>
         public static T Sum<T>(T[] x)
         {
@@ -155,11 +155,37 @@ namespace GenericVectors
         /// Calculates the average of the elements in the given array
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="x"></param>
+        /// <param name="x">The array to average</param>
         /// <returns>the average of the elements in the array</returns>
         public static T Mean<T>(T[] x) 
         {
             return Operator.DivideInt32(Sum(x), x.Length);            
+        }
+
+        /// <summary>
+        /// Calculates the variance of the samples in the array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="x"></param>
+        /// <param name="df">degrees of freedom offset. This value will be subtracted
+        /// from the number of elements in the array in the final average. Default is 0</param>
+        /// <returns></returns>
+        public static T Var<T>(T[] x, int df = 0)
+        {
+            return VectorOp<T>.Variance(x, df);            
+        }
+
+        /// <summary>
+        /// Calculates the standard deviation of the samples in the array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="x"></param>
+        /// <param name="df">degrees of freedom offset. This value will be subtracted 
+        /// from the number of elements in the array in the final average. Default is 0</param>
+        /// <returns></returns>
+        public static T StdDev<T>(T[] x, int df = 0)
+        {
+            return UnaryOp<T>.Sqrt(Var(x, df));
         }
        
     }
