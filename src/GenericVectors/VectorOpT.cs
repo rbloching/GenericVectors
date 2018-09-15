@@ -91,7 +91,7 @@ namespace GenericVectors
             divScalar(x, scalar, result);
         }       
        
-        public static T Var(T[] x, int degOfFreedom)
+        public static T Variance(T[] x, int degOfFreedom)
         {
             return variance(x, degOfFreedom);
         }

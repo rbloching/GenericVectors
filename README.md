@@ -18,5 +18,4 @@ GenericVectors will work with arrays of these types:
 * ulong
 * float
 * double
-* System.Numerics.BigInteger
 * System.Numerics.Complex

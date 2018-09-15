@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace GenericVectors
 {
-    internal class ExpressionTrees
+    internal static partial class ExpressionTrees
     {
         public static Action<T[], T[], T[]> GetElementWiseAction<T>(Func<Expression, Expression, BinaryExpression> binaryOp)
         {

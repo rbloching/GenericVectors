@@ -104,9 +104,9 @@ namespace Tests
         [Fact]
         public void MeanTest()
         {
-            BigInteger[] x = {100,200,300 };
-            BigInteger expected = new BigInteger(200);
-            BigInteger result = VectorOp.Mean(x);
+            double[] x = {100,200,300 };
+            double expected = 200;
+            double result = VectorOp.Mean(x);
             Assert.Equal(expected, result);            
         } 
 
@@ -118,7 +118,7 @@ namespace Tests
         {            
             double[] xDouble = {400,270,170,180,300 };            
             double expectedDouble = 7144;
-            double resultDouble = VectorOp.Var(xDouble);
+            double resultDouble = VectorOp.Variance(xDouble);
             Assert.Equal(expectedDouble, resultDouble);
         }
                
@@ -130,7 +130,7 @@ namespace Tests
         {
             double[] xDouble = { 400, 270, 170, 180, 300 };
             double expectedDouble = 8930;
-            double resultDouble = VectorOp.Var(xDouble,1);
+            double resultDouble = VectorOp.Variance(xDouble,1);
             Assert.Equal(expectedDouble, resultDouble);
         }
         
@@ -147,10 +147,20 @@ namespace Tests
             warmUpVector<ulong>();
             warmUpVector<float>();
             warmUpVector<double>();
-            warmUpVector<decimal>();
-            warmUpVector<BigInteger>();
+            warmUpVector<decimal>();           
             warmUpVector<Complex>();            
         }
+
+        [Fact]
+        public void StandardDeviationSample()
+        {
+            double[] x = { 400, 270, 170, 180, 300 };
+            double expected = 94.49868;
+            double result = VectorOp.StandardDeviation(x, 1);
+            Assert.Equal(expected, result, 5);            
+        }
+
+
 
         void warmUpVector<T>()
         {
