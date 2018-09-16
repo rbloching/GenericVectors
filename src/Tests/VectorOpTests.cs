@@ -160,6 +160,32 @@ namespace Tests
             Assert.Equal(expected, result, 5);            
         }
 
+        [Fact]
+        public void ProductTest()
+        {
+            float[] x = { 1.2F, 3.4F, 5.6F };
+            float expected = 22.848F;
+            float result = VectorOp.Prod(x);
+            Assert.Equal(expected, result, 3);
+        }
+
+        [Fact]
+        public void EmptySumTest()
+        {
+            double[] x = new double[0];
+            double expected = 0.0;
+            double result = VectorOp.Sum(x);
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void EmptyProdTest()
+        {
+            double[] x = new double[0];
+            double expected = 1.0;
+            double result = VectorOp.Prod(x);
+            Assert.Equal(expected, result);
+        }
 
 
         void warmUpVector<T>()
