@@ -170,14 +170,21 @@ namespace Tests
         }
 
         [Fact]
-        public void EmptyArrayTest()
+        public void EmptySumTest()
         {
-            //aggregate operators throw IndexOutOfBounds exception
-            // on empty arrays
             double[] x = new double[0];
-                        
-            Assert.Throws<IndexOutOfRangeException>(() => VectorOp.Sum(x));
-            Assert.Throws<IndexOutOfRangeException>(() => VectorOp.Prod(x));
+            double expected = 0.0;
+            double result = VectorOp.Sum(x);
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void EmptyProdTest()
+        {
+            double[] x = new double[0];
+            double expected = 1.0;
+            double result = VectorOp.Prod(x);
+            Assert.Equal(expected, result);
         }
 
 

@@ -207,12 +207,12 @@ namespace GenericVectors
                     Expression.Assign(length,Expression.ArrayLength(array)),
                     Expression.Assign(index, zeroInt()),
                     Expression.Loop(
-                        Expression.Block(                            
-                            operation(index),
-                            Expression.PostIncrementAssign(index),
-                            Expression.IfThen(Expression.GreaterThanOrEqual(index,length), 
+                        Expression.Block(
+                            Expression.IfThen(Expression.GreaterThanOrEqual(index, length),
                                 Expression.Break(label)
-                                )
+                                ),
+                            operation(index),
+                            Expression.PostIncrementAssign(index)                            
                             ),
                         label                            
                         )
