@@ -160,6 +160,25 @@ namespace Tests
             Assert.Equal(expected, result, 5);            
         }
 
+        [Fact]
+        public void ProductTest()
+        {
+            float[] x = { 1.2F, 3.4F, 5.6F };
+            float expected = 22.848F;
+            float result = VectorOp.Prod(x);
+            Assert.Equal(expected, result, 3);
+        }
+
+        [Fact]
+        public void EmptyArrayTest()
+        {
+            //aggregate operators throw IndexOutOfBounds exception
+            // on empty arrays
+            double[] x = new double[0];
+                        
+            Assert.Throws<IndexOutOfRangeException>(() => VectorOp.Sum(x));
+            Assert.Throws<IndexOutOfRangeException>(() => VectorOp.Prod(x));
+        }
 
 
         void warmUpVector<T>()

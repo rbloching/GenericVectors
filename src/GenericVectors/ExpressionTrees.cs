@@ -95,6 +95,30 @@ namespace GenericVectors
             return Expression.Lambda<Func<T[], T>>(block, array).Compile();
         }
 
+
+        public static Func<T[], T> CreateProduct<T>()
+        {
+            //parameter to function
+            var array = Expression.Parameter(typeof(T[]));
+
+            //local variables
+            var result = Expression.Variable(typeof(T));
+            var index = Expression.Variable(typeof(int));
+            var argLen = Expression.Variable(typeof(int));
+
+
+            //expression tree            
+            var op = Expression.MultiplyAssign(result, Expression.ArrayIndex(array, index));
+            var loop = getArrayLoopExpression(op, argLen, index);
+            var block = Expression.Block(new[] { result, index, argLen },
+                Expression.Assign(argLen, Expression.ArrayLength(array)),
+                Expression.Assign(result,one<T>()),                
+                loop, 
+                result);
+
+            return Expression.Lambda<Func<T[], T>>(block, array).Compile();
+        }       
+
         public static Func<T[], T[], T> CreateDot<T>()
         {
             //parameters
@@ -186,6 +210,12 @@ namespace GenericVectors
         {
             return Expression.Constant(0, typeof(int));
         }
+
+        static Expression one<T>()
+        {
+            return Expression.Convert(Expression.Constant(1),typeof(T));
+        }
+
 
         static Expression getArrayLoopExpression(Expression operation, Expression vectorLength, Expression index)
         {

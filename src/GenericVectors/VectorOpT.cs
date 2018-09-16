@@ -20,6 +20,7 @@ namespace GenericVectors
         static readonly Action<T[], T, T[]> divScalar;
 
         static readonly Func<T[], T> sum;
+        static readonly Func<T[], T> prod;
         static readonly Func<T[], T[], T> dot;
         static readonly Func<T[],int, T> variance;
         
@@ -35,7 +36,8 @@ namespace GenericVectors
             multScalar = ExpressionTrees.GetElementWiseWithScalarAction<T>(Expression.Multiply);
             divScalar = ExpressionTrees.GetElementWiseWithScalarAction<T>(Expression.Divide);
             
-            sum = ExpressionTrees.CreateSum<T>(); 
+            sum = ExpressionTrees.CreateSum<T>();
+            prod = ExpressionTrees.CreateProduct<T>();
             dot = ExpressionTrees.CreateDot<T>();
             variance = ExpressionTrees.CreateVar<T>();
         }
@@ -44,6 +46,11 @@ namespace GenericVectors
         public static T Sum(T[] x)
         {
             return sum(x);
+        }
+
+        public static T Prod(T[] x)
+        {
+            return prod(x);
         }
 
         public static T Dot(T[] x, T[] y)

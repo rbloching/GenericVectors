@@ -152,6 +152,18 @@ namespace GenericVectors
         }        
 
         /// <summary>
+        /// Calculates the product of the array elements
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="x">The array of elements to multiply</param>
+        /// <returns>The product of the elements in the array</returns>
+        public static T Prod<T>(T[] x)
+        {
+            return VectorOp<T>.Prod(x);
+        }
+
+
+        /// <summary>
         /// Calculates the average of the elements in the given array
         /// </summary>
         /// <typeparam name="T"></typeparam>
