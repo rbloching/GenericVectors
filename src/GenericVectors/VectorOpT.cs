@@ -23,6 +23,7 @@ namespace GenericVectors
         static readonly Func<T[], T> prod;
         static readonly Func<T[], T[], T> dot;
         static readonly Func<T[],int, T> variance;
+        static readonly Func<T[], T> sumSquares;
         
         static VectorOp()
         {            
@@ -40,6 +41,7 @@ namespace GenericVectors
             prod = ExpressionTrees.CreateProduct<T>();
             dot = ExpressionTrees.CreateDot<T>();
             variance = ExpressionTrees.CreateVar<T>();
+            sumSquares = ExpressionTrees.CreateSumSquares<T>();
         }
 
 
@@ -101,6 +103,11 @@ namespace GenericVectors
         public static T Variance(T[] x, int degOfFreedom)
         {
             return variance(x, degOfFreedom);
+        }
+
+        public static T SumSquares(T[] x)
+        {
+            return sumSquares(x);
         }
 
     }

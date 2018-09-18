@@ -175,6 +175,32 @@ namespace GenericVectors
             return Expression.Lambda<Func<T[],int, T>>(block, xArray, degOfFreedom).Compile();            
         }
 
+        public static Func<T[], T> CreateSumSquares<T>()
+        {
+            //parameters
+            var xArray = Expression.Parameter(typeof(T[]));            
+
+            //local variables
+            var sum = Expression.Variable(typeof(T));
+            var sq = Expression.Variable(typeof(T));
+
+            //in-loop operation
+            Expression op(Expression loopIndex)
+            {
+                return
+                Expression.Block(
+                    Expression.Assign(sq,Expression.ArrayIndex(xArray,loopIndex)),
+                    Expression.AddAssign(sum, Expression.Multiply(sq, sq))
+                    );                               
+            }
+
+            var block = Expression.Block(new[] { sq, sum },                 
+                getLoopExpression(op, xArray), 
+                sum);
+            return Expression.Lambda<Func<T[], T>>(block, xArray).Compile();
+        }
+
+
         static Expression zeroInt()
         {
             return Expression.Constant(0, typeof(int));

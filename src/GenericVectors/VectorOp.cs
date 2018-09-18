@@ -199,6 +199,18 @@ namespace GenericVectors
         {
             return UnaryOp<T>.Sqrt(Var(x, df));
         }
+
+
+        /// <summary>
+        /// Calculates the Root Mean Square of the samples in the array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static T Rms<T>(T[] x)
+        {
+            return UnaryOp<T>.Sqrt(Operator.DivideInt32(VectorOp<T>.SumSquares(x), x.Length));
+        }
        
     }
 }

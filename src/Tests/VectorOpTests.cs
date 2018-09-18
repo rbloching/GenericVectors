@@ -196,5 +196,16 @@ namespace Tests
             T[] z = new T[len];
             VectorOp<T>.Add(x, y, z);
         }
+
+
+        [Fact]
+        public void RmsTest()
+        {
+            float[] x = new float[] {1.23F, -2.34F, 4.56F, -5.24F, 6.12F };
+            float expected = 4.305673F;
+            float result = VectorOp.Rms(x);
+
+            Assert.Equal(expected, result, 6);            
+        }
     }
 }
