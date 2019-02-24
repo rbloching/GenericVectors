@@ -5,6 +5,7 @@ using MiscUtil;
 
 namespace Benchmarks
 {
+    [MarkdownExporter, HtmlExporter]    
     public class GenericVectorBenchmark
     {
         double[] x;
@@ -21,19 +22,19 @@ namespace Benchmarks
         [Params(1_000, 10_000, 100_000)]
         public int ArrayLength { get; set; }
 
-        [Benchmark]
+        [Benchmark(Description = "Non-generic dot product")]
         public void DotArrayDouble()
         {
             dot(x, y);
         }
 
-        [Benchmark]
+        [Benchmark(Description ="Dot product using generic operators")]
         public void DotGenericOpInLoop()
         {
             dot<double>(x, y);
         }
 
-        [Benchmark]
+        [Benchmark(Description = "Dot product using GenericVector")]
         public void DotGenericVector()
         {
             VectorOp.Dot(x, y);
